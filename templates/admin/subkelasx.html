@@ -1,0 +1,882 @@
+{% extends "template.html" %}
+{% block content %}
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Detail Kelas</h1>
+    <div class="card">
+        <div class="card-header">
+            Detail Kelas
+        </div>
+        <div class="card-body">
+            <table class="table table-borderless">
+                <tbody>
+                    {% for dt in Detail %}
+                    <tr>
+                        <td style="width: 200px;">Nama Kelas</td>
+                        <td>:</td>
+                        <td>{{ dt[1] }}</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Wali Kelas</td>
+                        <td>:</td>
+                        <td>{{ dt[3] }}</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Kelas</td>
+                        <td>:</td>
+                        <td>{{ dt[4] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                aria-selected="true">Siswa</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#pelajaran" role="tab"
+                aria-controls="pelajaran" aria-selected="false">Mata Pelajaran</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+                aria-selected="false">Jadwal</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="card">
+                <div class="card-body">
+                    <div class="align-items-center justify-content-between mb-4">
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target="#exampleModalCenter">
+                            <i class="fas fa-plus fa-sm text-white-50"></i>
+                            Tambah Data Siswa
+                        </button>
+                        <button class="btn btn-danger DeleteData" href="javascript:void(0)"
+                            onclick="DeleteAllData(event.target)"><i class="fas fa-trash"></i> Delete Data</button>
+                    </div>
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Data Siswa</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>NIS</th>
+                                            <th>Nama</th>
+                                            <th>Fungsi</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>NIS</th>
+                                            <th>Nama</th>
+                                            <th>Fungsi</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        {% for dt in List %}
+                                        <tr>
+                                            <td>
+                                                {{ dt[1] }}
+                                            </td>
+                                            <td>
+                                                {{ dt[2] }}
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-danger DeleteData" data-id="{{dt[1]}}"
+                                                    href="javascript:void(0)" onclick="DeleteData(event.target)"><i
+                                                        class="fas fa-trash"></i> Delete Data</button>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade show" id="pelajaran" role="tabpanel" aria-labelledby="pelajaran-tab">
+            <div class="card">
+                <div class="card-body">
+                    <div class="align-items-center justify-content-between mb-4">
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target="#ModalTambahPelajaran">
+                            <i class="fas fa-plus fa-sm text-white-50"></i>
+                            Tambah Data Pelajaran
+                        </button>
+                    </div>
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Data Pelajaran</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Mata Pelajaran</th>
+                                            <th>Fungsi</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Mata Pelajaran</th>
+                                            <th>Fungsi</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        {% for dt in Pelajaran %}
+                                        <tr>
+                                            <td>
+                                                {{ dt[1] }}
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-success DeleteData"
+                                                    href="/admin/subkelas/{{ Detail[0][0] }}/{{dt[2]}}/{{dt[0]}}" "><i
+                                                        class=" fas fa-edit"></i> Nilai Siswa</a>
+                                                <button class="btn btn-danger DeleteData" data-id="{{dt[0]}}"
+                                                    href="javascript:void(0)"
+                                                    onclick="DeleteDataPelajaran(event.target)"><i
+                                                        class="fas fa-trash"></i> Delete Data</button>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="card">
+                <div class="card-body">
+                    <div class="align-items-center justify-content-between mb-4">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#TambahJadwal"
+                            id="BtnJadwal">
+                            <i class="fas fa-calendar-alt fa-sm text-white-50"></i>
+                            Tambah Jadwal
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>HARI</th>
+                                    <th>NAMA PELAJARAN</th>
+                                    <th>NAMA GURU</th>
+                                    <th>JAM AWAL</th>
+                                    <th>JAM AKHIR</th>
+                                    <th>FUNGSI</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>HARI</th>
+                                    <th>NAMA PELAJARAN</th>
+                                    <th>NAMA GURU</th>
+                                    <th>JAM AWAL</th>
+                                    <th>JAM AKHIR</th>
+                                    <th>FUNGSI</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                {% for dt in Senin %}
+                                <tr>
+                                    <td>
+                                        {{ dt[2] }}
+                                    </td>
+                                    <td>
+                                        {{ dt[1] }}
+                                    </td>
+                                    <td>
+                                        {{ dt[3] }}
+                                    </td>
+                                    <td>
+                                        {{ dt[4] }}
+                                    </td>
+                                    <td>
+                                        {{ dt[5] }}
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-success editdata" data-id="{{dt[0]}}"
+                                            href="javascript:void(0)" onclick="editPost(event.target)"><i
+                                                class="fas fa-edit"></i> Edit Data</button>
+                                        <button class="btn btn-danger DeleteData" data-id="{{dt[0]}}"
+                                            href="javascript:void(0)" onclick="DeleteJadwal(event.target)"><i
+                                                class="fas fa-trash"></i> Delete Data</button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% for dt2 in Selasa %}
+                                <tr>
+                                    <td>
+                                        {{ dt2[2] }}
+                                    </td>
+                                    <td>
+                                        {{ dt2[1] }}
+                                    </td>
+                                    <td>
+                                        {{ dt2[3] }}
+                                    </td>
+                                    <td>
+                                        {{ dt2[4] }}
+                                    </td>
+                                    <td>
+                                        {{ dt2[5] }}
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-success editdata" data-id="{{dt2[0]}}"
+                                            href="javascript:void(0)" onclick="editPost(event.target)"><i
+                                                class="fas fa-edit"></i> Edit Data</button>
+                                        <button class="btn btn-danger DeleteData" data-id="{{dt2[0]}}"
+                                            href="javascript:void(0)" onclick="DeleteJadwal(event.target)"><i
+                                                class="fas fa-trash"></i> Delete Data</button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% for dt3 in Rabu %}
+                                <tr>
+                                    <td>
+                                        {{ dt3[2] }}
+                                    </td>
+                                    <td>
+                                        {{ dt3[1] }}
+                                    </td>
+                                    <td>
+                                        {{ dt3[3] }}
+                                    </td>
+                                    <td>
+                                        {{ dt3[4] }}
+                                    </td>
+                                    <td>
+                                        {{ dt3[5] }}
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-success editdata" data-id="{{dt3[0]}}"
+                                            href="javascript:void(0)" onclick="editPost(event.target)"><i
+                                                class="fas fa-edit"></i> Edit Data</button>
+                                        <button class="btn btn-danger DeleteData" data-id="{{dt3[0]}}"
+                                            href="javascript:void(0)" onclick="DeleteJadwal(event.target)"><i
+                                                class="fas fa-trash"></i> Delete Data</button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% for dt4 in Kamis %}
+                                <tr>
+                                    <td>
+                                        {{ dt4[2] }}
+                                    </td>
+                                    <td>
+                                        {{ dt4[1] }}
+                                    </td>
+                                    <td>
+                                        {{ dt4[3] }}
+                                    </td>
+                                    <td>
+                                        {{ dt4[4] }}
+                                    </td>
+                                    <td>
+                                        {{ dt4[5] }}
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-success editdata" data-id="{{dt4[0]}}"
+                                            href="javascript:void(0)" onclick="editPost(event.target)"><i
+                                                class="fas fa-edit"></i> Edit Data</button>
+                                        <button class="btn btn-danger DeleteData" data-id="{{dt4[0]}}"
+                                            href="javascript:void(0)" onclick="DeleteJadwal(event.target)"><i
+                                                class="fas fa-trash"></i> Delete Data</button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% for dt in Jumat %}
+                                <tr>
+                                    <td>
+                                        {{ dt[2] }}
+                                    </td>
+                                    <td>
+                                        {{ dt[1] }}
+                                    </td>
+                                    <td>
+                                        {{ dt[3] }}
+                                    </td>
+                                    <td>
+                                        {{ dt[4] }}
+                                    </td>
+                                    <td>
+                                        {{ dt[5] }}
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-success editdata" data-id="{{dt[0]}}"
+                                            href="javascript:void(0)" onclick="editPost(event.target)"><i
+                                                class="fas fa-edit"></i> Edit Data</button>
+                                        <button class="btn btn-danger DeleteData" data-id="{{dt[0]}}"
+                                            href="javascript:void(0)" onclick="DeleteJadwal(event.target)"><i
+                                                class="fas fa-trash"></i> Delete Data</button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Tambah Siswa</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Siswa:</label>
+                            <select class="form-control selectpicker" data-live-search="true" id="siswa" name="siswa"
+                                multiple>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="tambahDataSiswa">Tambah Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ModalTambahPelajaran" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Tambah Pelajaran</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Mata Pelajaran:</label>
+                            <select class="form-control selectpicker" data-live-search="true" id="MataPelajaran"
+                                name="MataPelajaran" multiple>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="tambahDataPelajaran">Tambah Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="TambahJadwal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Tambah Jadwal</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Hari:</label>
+                            <select class="form-control selectpicker" data-live-search="true" id="hari" name="hari" \>
+                                <option data-tokens="Senin">Senin</option>
+                                <option data-tokens="Selasa">Selasa</option>
+                                <option data-tokens="Rabu">Rabu</option>
+                                <option data-tokens="Kamis">Kamis</option>
+                                <option data-tokens="Jumat">Jumat</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Nama Pelajaran:</label>
+                            <select class="form-control selectpicker" data-live-search="true" id="namaPelajaran"
+                                name="namaPelajaran">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Guru:</label>
+                            <select class="form-control selectpicker" data-live-search="true" id="guru" name="guru">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Jam Awal:</label>
+                            <input type="time" class="form-control timepicker" id="jamAwal" name="jamAwal">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Jam Akhir:</label>
+                            <input type="time" class="form-control timepicker" id="jamAkhir" name="jamAkhir">
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="tambahDataJadwal">Tambah Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="EditJadwal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Edit Jadwal</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" class="form-control timepicker" id="EditID" name="EditID">
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Hari:</label>
+                            <select class="form-control selectpicker" data-live-search="true" id="Edithari"
+                                name="Edithari" \>
+                                <option data-tokens="Senin">Senin</option>
+                                <option data-tokens="Selasa">Selasa</option>
+                                <option data-tokens="Rabu">Rabu</option>
+                                <option data-tokens="Kamis">Kamis</option>
+                                <option data-tokens="Jumat">Jumat</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Nama Pelajaran:</label>
+                            <select class="form-control selectpicker" data-live-search="true" id="EditnamaPelajaran"
+                                name="EditnamaPelajaran">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Guru:</label>
+                            <select class="form-control selectpicker" data-live-search="true" id="Editguru"
+                                name="Editguru">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Jam Awal:</label>
+                            <input type="time" class="form-control timepicker" id="EditjamAwal" name="EditjamAwal">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Jam Akhir:</label>
+                            <input type="time" class="form-control timepicker" id="EditjamAkhir" name="EditjamAkhir">
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="tambahDataJadwal">Tambah Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $.ajaxSetup( {
+        headers: {
+            'X-CSRF-TOKEN': $( 'meta[name="csrf-token"]' ).attr( 'content' )
+        }
+    } );
+
+    function TambahData( event ) {
+        $( '#tambahData' ).modal( 'show' );
+
+    }
+
+    function editPost( event ) {
+        $.ajaxSetup( {
+            headers: {
+                'X-CSRF-TOKEN': jQuery( 'meta[name="csrf-token"]' ).attr( 'content' )
+            }
+        } );
+        let idJadwal = $( event ).data( "id" );
+        console.log( idJadwal );
+        let _url = '/admin/jadwal/edit/' + idJadwal;
+        $.ajax( {
+            url: _url,
+            type: "POST",
+            success: function ( response ) {
+                console.log( response );
+                $( '#EditJadwal' ).modal( 'show' );
+                $( '#EditID' ).val( response.data[ 0 ][ 0 ] );
+                $( '#Edithari' ).val( response.data[ 0 ][ 1 ] );
+                $( '#EditnamaPelajaran' ).val( response.data[ 0 ][ 3 ] );
+                $( '#Editguru' ).val( response.data[ 0 ][ 4 ] );
+                $( '#EditjamAwal' ).val( response.data[ 0 ][ 5 ] );
+                $( '#EditjamAkhir' ).val( response.data[ 0 ][ 6 ] );
+                $( "#EditnamaPelajaran" ).selectpicker( "refresh" );
+                $( "#Editguru" ).selectpicker( "refresh" );
+            }
+        } );
+    };
+
+    function DeleteData( event ) {
+        swal( {
+            title: "Hapus Kelas",
+            text: "Yakin ingin menghapus kelas ini?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        } )
+            .then( ( willDelete ) => {
+                if ( willDelete ) {
+                    let ID = $( event ).data( "id" );
+                    console.log( ID );
+                    let IDKelas = '{{ Detail[0][0] }}';
+                    let _url = '/admin/subsiswa/delete';
+                    $.ajax( {
+                        url: _url,
+                        type: "POST",
+                        contentType: 'application/json;charset=UTF-8',
+                        data: JSON.stringify( { 'id': IDKelas, 'nis': ID } ),
+                        dataType: "json",
+                        success: function ( response ) {
+                            if ( response.respon[ 'status' ] == true ) {
+                                swal( "Sukses", "Data Sudah Dihapus", "success" ).then( ( value ) => {
+                                    location.reload();
+                                } );
+                            } else {
+                                swal( "Gagal", "Data gagal Dihapus", "error" );
+                            }
+                        },
+                        error: function ( err ) {
+                            swal( "Gagal", "Data gagal Dihapus", "error" );
+                        }
+                    } );
+
+                } else {
+
+                }
+            } );
+    };
+
+    function DeleteDataPelajaran( event ) {
+        swal( {
+            title: "Hapus Pelajaran",
+            text: "Yakin ingin menghapus Pelajaran ini?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        } )
+            .then( ( willDelete ) => {
+                if ( willDelete ) {
+                    let ID = $( event ).data( "id" );
+                    console.log( ID );
+                    let _url4 = '/admin/delete/subkelasx/pelajaran';
+                    $.ajax( {
+                        url: _url4,
+                        type: "POST",
+                        contentType: 'application/json;charset=UTF-8',
+                        data: JSON.stringify( { 'id': ID } ),
+                        dataType: "json",
+                        success: function ( response ) {
+                            if ( response.data[ 'status' ] == true ) {
+                                swal( "Sukses", "Data Sudah Dihapus", "success" ).then( ( value ) => {
+                                    location.reload();
+                                } );
+                            } else {
+                                swal( "Gagal", "Data gagal Dihapus", "error" );
+                            }
+                        },
+                        error: function ( err ) {
+                            swal( "Gagal", "Data gagal Dihapus", "error" );
+                        }
+                    } );
+
+                } else {
+
+                }
+            } );
+    };
+
+    function DeleteJadwal( event ) {
+        swal( {
+            title: "Hapus Kelas",
+            text: "Yakin ingin menghapus jadwal ini?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        } )
+            .then( ( willDelete ) => {
+                if ( willDelete ) {
+                    let ID = $( event ).data( "id" );
+                    let _url = '/admin/jadwal/delete';
+                    $.ajax( {
+                        url: _url,
+                        type: "POST",
+                        contentType: 'application/json;charset=UTF-8',
+                        data: JSON.stringify( { 'id': ID, } ),
+                        dataType: "json",
+                        success: function ( response ) {
+                            if ( response.data[ 'status' ] == true ) {
+                                swal( "Sukses", "Data Sudah Dihapus", "success" ).then( ( value ) => {
+                                    location.reload();
+                                } );
+                            } else {
+                                swal( "Gagal", "Data gagal Dihapus", "error" );
+                            }
+                        },
+                        error: function ( err ) {
+                            swal( "Gagal", "Data gagal Dihapus", "error" );
+                        }
+                    } );
+
+                } else {
+
+                }
+            } );
+    };
+
+    function DeleteAllData( event ) {
+        swal( {
+            title: "Hapus Semua Siswa",
+            text: "Yakin ingin menghapus semua siswa kelas ini?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        } )
+            .then( ( willDelete ) => {
+                if ( willDelete ) {
+                    let IDKelas = '{{ Detail[0][0] }}';
+                    let _url = '/admin/subsiswa/deleteAll';
+                    $.ajax( {
+                        url: _url,
+                        type: "POST",
+                        contentType: 'application/json;charset=UTF-8',
+                        data: JSON.stringify( { 'id': IDKelas } ),
+                        dataType: "json",
+                        success: function ( response ) {
+                            if ( response.respon[ 'status' ] == true ) {
+                                swal( "Sukses", "Data Sudah Dihapus", "success" ).then( ( value ) => {
+                                    location.reload();
+                                } );
+                            } else {
+                                swal( "Gagal", "Data gagal Dihapus", "error" );
+                            }
+                        },
+                        error: function ( err ) {
+                            swal( "Gagal", "Data gagal Dihapus", "error" );
+                        }
+                    } );
+                }
+            } );
+    };
+
+    $( document ).ready( function () {
+        $( function () {
+            $( '.selectpicker' ).selectpicker();
+        } );
+
+
+        $.ajaxSetup( {
+            headers: {
+                'X-CSRF-TOKEN': jQuery( 'meta[name="csrf-token"]' ).attr( 'content' )
+            }
+        } );
+        let _url = '/admin/subkelasx/siswa';
+        $.ajax( {
+            url: _url,
+            type: "POST",
+            success: function ( response ) {
+                $.each( response.data, function ( i, value ) {
+                    $( "#siswa" ).append( '<option value=' + value[ 0 ] + '>' + value[ 1 ] + '</option>' );
+                    $( "#siswa" ).selectpicker( "refresh" );
+                } );
+
+            }
+        } );
+        let _url2 = '/admin/subkelasx/pelajaran';
+        $.ajax( {
+            url: _url2,
+            type: "POST",
+            success: function ( response ) {
+                $.each( response.data, function ( i, value ) {
+                    $( "#MataPelajaran" ).append( '<option value=' + value[ 0 ] + '>' + value[ 1 ] + '</option>' );
+                    $( "#namaPelajaran" ).append( '<option value=' + value[ 0 ] + '>' + value[ 1 ] + '</option>' );
+                    $( "#EditnamaPelajaran" ).append( '<option value=' + value[ 0 ] + '>' + value[ 1 ] + '</option>' );
+                    $( "#EditnamaPelajaran" ).selectpicker( "refresh" );
+                    $( "#MataPelajaran" ).selectpicker( "refresh" );
+                    $( "#namaPelajaran" ).selectpicker( "refresh" );
+                } );
+
+            }
+        } );
+
+        let _url3 = '/admin/data/select/guru';
+        $.ajax( {
+            url: _url3,
+            type: "POST",
+            success: function ( response ) {
+                $.each( response.data, function ( i, value ) {
+                    $( "#guru" ).append( '<option value=' + value[ 0 ] + '>' + value[ 1 ] + '</option>' );
+                    $( "#guru" ).selectpicker( "refresh" );
+                    $( "#Editguru" ).append( '<option value=' + value[ 0 ] + '>' + value[ 1 ] + '</option>' );
+                    $( "#Editguru" ).selectpicker( "refresh" );
+                } );
+            }
+        } );
+
+        $( '#tambahDataJadwal' ).on( 'click', function ( e ) {
+            e.preventDefault();
+            let JadwalAwal = $( '#jamAwal' ).val();
+            let JadwalAkhir = $( '#jamAkhir' ).val();
+            let Hari = $( '#hari' ).val();
+            let Guru = $( '#guru' ).val();
+            let namaPelajaran = $( '#namaPelajaran' ).val();
+            let IDKelas = '{{ Detail[0][0] }}';
+            if ( JadwalAwal != "" && JadwalAkhir != "" && Hari != "" && Guru != "" && namaPelajaran != "" ) {
+                $.ajax( {
+                    method: "POST",
+                    url: '/admin/jadwal/input',
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify( { 'IDKelas': IDKelas, 'namaPelajaran': namaPelajaran, 'JadwalAwal': JadwalAwal, 'JadwalAkhir': JadwalAkhir, 'Hari': Hari, 'Guru': Guru } ),
+                    dataType: "json",
+                    success: function ( data ) {
+                        if ( data.data[ 'status' ] == true ) {
+                            swal( "Sukses", "Data Sudah Diinput", "success" ).then( ( value ) => {
+                                location.reload();
+                            } );
+                        } else {
+                            swal( "Gagal", "Data gagal diinput", "error" );
+                        }
+                    },
+                    error: function ( err ) {
+                        swal( "Gagal", "Data gagal diinput", "error" );
+                    }
+                } );
+            } else {
+                swal( "Gagal", "Data tidak boleh kosong!!", "error" );
+            }
+        } );
+
+        $( '#tambahDataSiswa' ).on( 'click', function ( e ) {
+            e.preventDefault();
+            let IDKelas = '{{ Detail[0][0] }}';
+            let dataSiswa = $( '#siswa' ).val();
+            if ( dataSiswa != "" ) {
+                $.ajax( {
+                    method: "POST",
+                    url: '/admin/input/subkelasx/siswa',
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify( { 'IDKelas': IDKelas, 'dataSiswa': dataSiswa } ),
+                    dataType: "json",
+                    success: function ( data ) {
+                        console.log( data );
+                        if ( data.data[ 'status' ] == true ) {
+                            swal( "Sukses", "Data Sudah Diinput", "success" ).then( ( value ) => {
+                                location.reload();
+                            } );
+                        } else {
+                            swal( "Gagal", "Data gagal diinput", "error" );
+                        }
+                    },
+                    error: function ( err ) {
+                        swal( "Gagal", "Data gagal diinput", "error" );
+                    }
+                } );
+            }
+        } );
+
+
+        $( '#tambahDataPelajaran' ).on( 'click', function ( e ) {
+            e.preventDefault();
+            let IDKelas = '{{ Detail[0][0] }}';
+            let dataPelajaran = $( '#MataPelajaran' ).val();
+            if ( dataPelajaran != "" ) {
+                $.ajax( {
+                    method: "POST",
+                    url: '/admin/input/subkelasx/pelajaran',
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify( { 'IDKelas': IDKelas, 'dataPelajaran': dataPelajaran } ),
+                    dataType: "json",
+                    success: function ( data ) {
+                        console.log( data );
+                        if ( data.data[ 'status' ] == true ) {
+                            swal( "Sukses", "Data Sudah Diinput", "success" ).then( ( value ) => {
+                                location.reload();
+                            } );
+                        } else {
+                            swal( "Gagal", "Data gagal diinput", "error" );
+                        }
+                    },
+                    error: function ( err ) {
+                        swal( "Gagal", "Data gagal diinput", "error" );
+                    }
+                } );
+            } else {
+                swal( "Gagal", "Data tidak boleh kosong", "error" );
+            }
+
+        } );
+
+        $( '#editDataKelas' ).on( 'click', function ( e ) {
+            e.preventDefault();
+            let EditID = $( '#EditID' ).val();
+            let namaKelas = $( '#EditnamaKelas' ).val();
+            let jurusan = $( '#EditJurusan' ).val();
+            let walikelas = $( '#EditWaliKelas' ).val();
+
+            if ( namaKelas != "" && jurusan != "" && walikelas != "" ) {
+                $.ajax( {
+                    method: "POST",
+                    url: '/admin/update/kelasx',
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify( { 'EditID': EditID, 'namaKelas': namaKelas, 'jurusan': jurusan, 'walikelas': walikelas } ),
+                    dataType: "json",
+                    success: function ( data ) {
+                        console.log( data );
+                        if ( data.respon[ 'status' ] == true ) {
+                            swal( "Sukses", "Data Sudah Di Update", "success" ).then( ( value ) => {
+                                location.reload();
+                            } );
+                        } else {
+                            swal( "Gagal", "Data gagal Di Update", "error" );
+                        }
+
+                    },
+                    error: function ( err ) {
+                        swal( "Gagal", "Data gagal diinput", "error" );
+                    }
+                } );
+            } else {
+                swal( "Gagal", "Data gagal Di Update 2", "error" );
+            }
+        } );
+    } );
+
+</Script>
+{% endblock %}

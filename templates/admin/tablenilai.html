@@ -1,0 +1,367 @@
+{% extends "template.html" %}
+{% block content %}
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Detail Kelas</h1>
+    <div class="card">
+        <div class="card-header">
+            Detail Kelas
+        </div>
+        <div class="card-body">
+            <table class="table table-borderless">
+                <tbody>
+                    {% for dt in Detail %}
+                    <tr>
+                        <td style="width: 200px;">Kelas</td>
+                        <td>:</td>
+                        <td>{{ dt[1] }}</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Wali Kelas</td>
+                        <td>:</td>
+                        <td>{{ dt[3] }}</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Kelas</td>
+                        <td>:</td>
+                        <td>{{ dt[4] }}</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Mata Pelajaran</td>
+                        <td>:</td>
+                        <td>{{ dt[5] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+    <div class="align-items-center justify-content-between mb-4">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#tambahNilai">
+            <i class="fas fa-plus fa-sm text-white-50"></i>
+            Tambah Data Siswa
+        </button>
+        <button class="btn btn-success DeleteData" href="javascript:void(0)" onclick="TranskipNilai(event.target)"><i
+                class="fas fa-check "> Simpan Data Ke Transkip</i></button>
+    </div>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Data Nilai</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>NIS</th>
+                            <th>NAMA</th>
+                            <th>NILAI UTS</th>
+                            <th>NILAI UAS</th>
+                            <th>Fungsi</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>NIS</th>
+                            <th>NAMA</th>
+                            <th>NILAI UTS</th>
+                            <th>NILAI UAS</th>
+                            <th>Fungsi</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for dt in Nilai %}
+                        <tr>
+                            <td>
+                                {{ dt[0] }}
+                            </td>
+                            <td>
+                                {{ dt[1] }}
+                            </td>
+                            <td>
+                                {{ dt[2] }}
+                            </td>
+                            <td>
+                                {{ dt[3] }}
+                            </td>
+                            <td>
+                                <button class="btn btn-success editdata" data-id="{{dt[4]}}" href="javascript:void(0)"
+                                    onclick="editPost(event.target)"><i class="fas fa-edit"></i> Edit Data</button>
+                                <button class="btn btn-danger DeleteData" data-id="{{dt[4]}}" href="javascript:void(0)"
+                                    onclick="DeleteData(event.target)"><i class="fas fa-trash"></i></button>
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="tambahNilai" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Masukkan Nilai</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Siswa:</label>
+                            <select class="form-control selectpicker" data-live-search="true" id="SiswaKelas"
+                                name="SiswaKelas">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Nilai UTS:</label>
+                            <input type="number" class="form-control timepicker" id="uts" name="uts">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Nilai UAS:</label>
+                            <input type="number" class="form-control timepicker" id="uas" name="uas">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="tambahNilaiSiswa">Tambah Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editNilai" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Edit Nilai</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" class="form-control" id="EditNis" name="EditNis">
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Siswa:</label>
+                            <input type="text" class="form-control" id="EditSiswa" name="EditSiswa" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Nilai UTS:</label>
+                            <input type="number" class="form-control" id="edituts" name="edituts">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Nilai UAS:</label>
+                            <input type="number" class="form-control" id="edituas" name="edituas">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="editDataNilai">Edit Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $.ajaxSetup( {
+        headers: {
+            'X-CSRF-TOKEN': $( 'meta[name="csrf-token"]' ).attr( 'content' )
+        }
+    } );
+
+    function editPost( event ) {
+        $.ajaxSetup( {
+            headers: {
+                'X-CSRF-TOKEN': jQuery( 'meta[name="csrf-token"]' ).attr( 'content' )
+            }
+        } );
+        let idnilai = $( event ).data( "id" );
+        console.log( idnilai );
+        let _url = '/admin/nilai/getnilai/' + idnilai;
+        $.ajax( {
+            url: _url,
+            type: "POST",
+            success: function ( response ) {
+                console.log( response );
+                $( '#editNilai' ).modal( 'show' );
+                $( '#EditNis' ).val( response.data[ 0 ][ 0 ] );
+                $( '#EditSiswa' ).val( response.data[ 0 ][ 1 ] );
+                $( '#edituts' ).val( response.data[ 0 ][ 2 ] );
+                $( '#edituas' ).val( response.data[ 0 ][ 3 ] );
+            }
+        } );
+    };
+
+    function DeleteData( event ) {
+        swal( {
+            title: "Hapus Kelas",
+            text: "Yakin ingin menghapus siswa ini?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        } )
+            .then( ( willDelete ) => {
+                if ( willDelete ) {
+                    let idsiswa = $( event ).data( "id" );
+                    let _url = '/admin/nilai/delete';
+                    $.ajax( {
+                        url: _url,
+                        type: "POST",
+                        contentType: 'application/json;charset=UTF-8',
+                        data: JSON.stringify( { 'id': idsiswa } ),
+                        dataType: "json",
+                        success: function ( response ) {
+                            if ( response.data[ 'status' ] == true ) {
+                                swal( "Sukses", "Data Sudah Dihapus", "success" ).then( ( value ) => {
+                                    location.reload();
+                                } );
+                            } else {
+                                swal( "Gagal", "Data gagal Dihapus", "error" );
+                            }
+                        },
+                        error: function ( err ) {
+                            swal( "Gagal", "Data gagal Dihapus", "error" );
+                        }
+                    } );
+
+                } else {
+
+                }
+            } );
+    };
+
+    function TranskipNilai( event ) {
+        swal( {
+            title: "Simpan ke Transkip",
+            text: "Yakin ingin menyimpan data nilai ke transkip?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        } ).then( ( willDelete ) => {
+            if ( willDelete ) {
+                let id_kelas = '{{Detail[0][0]}}';
+                let _url = '/admin/nilai/transkip';
+                $.ajax( {
+                    url: _url,
+                    type: "POST",
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify( { 'id': id_kelas } ),
+                    dataType: "json",
+                    success: function ( response ) {
+                        if ( response.data[ 'status' ] == true ) {
+                            swal( "Sukses", "Data Sudah Dihapus", "success" ).then( ( value ) => {
+                                location.reload();
+                            } );
+                        } else {
+                            swal( "Gagal", "Data gagal Dihapus", "error" );
+                        }
+                    },
+                    error: function ( err ) {
+                        swal( "Gagal", "Data gagal Dihapus", "error" );
+                    }
+                } );
+
+            } else {
+
+            }
+        } );
+    };
+
+
+    $( document ).ready( function () {
+        $( function () {
+            $( '.selectpicker' ).selectpicker();
+        } );
+
+        $.ajaxSetup( {
+            headers: {
+                'X-CSRF-TOKEN': jQuery( 'meta[name="csrf-token"]' ).attr( 'content' )
+            }
+        } );
+        let _url = '/admin/subkelasx/siswakelas/{{Detail[0][0]}}';
+        $.ajax( {
+            url: _url,
+            type: "POST",
+            success: function ( response ) {
+                $.each( response.data, function ( i, value ) {
+                    $( "#SiswaKelas" ).append( '<option value=' + value[ 0 ] + '>' + value[ 1 ] + '</option>' );
+                    $( "#SiswaKelas" ).selectpicker( "refresh" );
+                } );
+
+            }
+        } );
+
+        $( '#tambahNilaiSiswa' ).on( 'click', function ( e ) {
+            e.preventDefault();
+            let Kelas = '{{Detail[0][0]}}';
+            let Pelajaran = '{{Detail[0][6]}}';
+            let SiswaKelas = $( '#SiswaKelas' ).val();
+            let uts = $( '#uts' ).val();
+            let uas = $( '#uas' ).val();
+            let IDNilai = '{{IDNilai}}';
+            $.ajax( {
+                method: "POST",
+                url: '/admin/nilai/input',
+                contentType: 'application/json;charset=UTF-8',
+                data: JSON.stringify( { 'IDNilai': IDNilai, 'SiswaKelas': SiswaKelas, 'uts': uts, 'uas': uas, 'Kelas': Kelas, 'Pelajaran': Pelajaran } ),
+                dataType: "json",
+                success: function ( data ) {
+                    if ( data.data[ 'status' ] == true ) {
+                        swal( "Sukses", "Data Sudah Di Input", "success" ).then( ( value ) => {
+                            location.reload();
+                        } );
+                    } else {
+                        swal( "Gagal", "Data gagal Di diinput", "error" );
+                    }
+
+                },
+                error: function ( err ) {
+                    swal( "Gagal", "Data gagal diinput", "error" );
+                }
+            } );
+        } );
+
+        $( '#editDataNilai' ).on( 'click', function ( e ) {
+            e.preventDefault();
+            let id = $( '#EditNis' ).val();
+            let uts = $( '#edituts' ).val();
+            let uas = $( '#edituas' ).val();
+            $.ajax( {
+                method: "POST",
+                url: '/admin/nilai/update',
+                contentType: 'application/json;charset=UTF-8',
+                data: JSON.stringify( { 'id': id, 'uts': uts, 'uas': uas } ),
+                dataType: "json",
+                success: function ( data ) {
+                    console.log( data );
+                    if ( data.data[ 'status' ] == true ) {
+                        swal( "Sukses", "Data Sudah Di Update", "success" ).then( ( value ) => {
+                            location.reload();
+                        } );
+                    } else {
+                        swal( "Gagal", "Data gagal Di Update", "error" );
+                    }
+
+                },
+                error: function ( err ) {
+                    swal( "Gagal", "Data gagal diinput", "error" );
+                }
+            } );
+        } );
+
+    } );
+
+</Script>
+{% endblock %}

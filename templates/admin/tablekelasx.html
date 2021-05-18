@@ -1,0 +1,334 @@
+{% extends "template.html" %}
+{% block content %}
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Tabel Kelas X</h1>
+    <div class="align-items-center justify-content-between mb-4">
+        <button type="button" class="btn btn-primary" href="javascript:void(0)" onclick="TambahData(event.target)">
+            <i class="fas fa-plus fa-sm text-white-50"></i>
+            Tambah Data
+        </button>
+    </div>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Data Kelas X</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Kelas</th>
+                            <th>Jurusan</th>
+                            <th>Wali Kelas</th>
+                            <th>Fungsi</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Kelas</th>
+                            <th>Jurusan</th>
+                            <th>Wali Kelas</th>
+                            <th>Fungsi</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for dt in dataKelas %}
+                        <tr>
+                            <td>
+                                {{ dt[1] }}
+                            </td>
+                            <td>
+                                {{ dt[2] }}
+                            </td>
+                            <td>
+                                {{ dt[3] }}
+                            </td>
+                            <td>
+                                <a href="/admin/subkelasx/{{dt[0]}}">
+                                    <button type="button" class="btn btn-primary">
+                                        <i class="fas fa-info"></i> Detail Kelas
+                                    </button>
+                                </a>
+                                <button class="btn btn-success editdata" data-id="{{dt[0]}}" href="javascript:void(0)"
+                                    onclick="editPost(event.target)"><i class="fas fa-edit"></i> Edit Data</button>
+                                <button class="btn btn-danger DeleteData" data-id="{{dt[0]}}" href="javascript:void(0)"
+                                    onclick="DeleteData(event.target)"><i class="fas fa-trash"></i></button>
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="tambahData" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Tambah Kelas</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Nama Kelas:</label>
+                            <input type="text" class="form-control" id="namaKelas" name="namaKelas">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Jurusan:</label>
+                            <select class="form-control selectpicker" data-live-search="true" id="Jurusan"
+                                name="Jurusan">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Wali Kelas:</label>
+                            <select class="form-control selectpicker" data-live-search="true" id="WaliKelas"
+                                name="WaliKelas">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Kelas:</label>
+                            <select class="form-control" id="Kelas" name="Kelas">
+                                <option value="X">X</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="tambahDataKelas">Tambah Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editData" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Edit Kelas</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" class="form-control" id="EditID" name="EditID">
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Nama Kelas:</label>
+                            <input type="text" class="form-control" id="EditnamaKelas" name="EditnamaKelas">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Jurusan:</label>
+                            <select class="form-control selectpicker" data-live-search="true" id="EditJurusan"
+                                name="EditJurusan">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Wali Kelas:</label>
+                            <select class="form-control selectpicker" data-live-search="true" id="EditWaliKelas"
+                                name="EditWaliKelas">
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="editDataKelas">Edit Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $.ajaxSetup( {
+        headers: {
+            'X-CSRF-TOKEN': $( 'meta[name="csrf-token"]' ).attr( 'content' )
+        }
+    } );
+
+    function TambahData( event ) {
+        $( '#tambahData' ).modal( 'show' );
+
+    }
+
+    function editPost( event ) {
+        $.ajaxSetup( {
+            headers: {
+                'X-CSRF-TOKEN': jQuery( 'meta[name="csrf-token"]' ).attr( 'content' )
+            }
+        } );
+        var idKelas = $( event ).data( "id" );
+        let _url = '/admin/editkelasx/' + idKelas;
+        $.ajax( {
+            url: _url,
+            type: "POST",
+            success: function ( response ) {
+                console.log( response );
+                $( '#editData' ).modal( 'show' );
+                $( '#EditID' ).val( response.data[ 0 ][ 0 ] );
+                $( '#EditnamaKelas' ).val( response.data[ 0 ][ 1 ] );
+                $( '#EditJurusan' ).val( response.data[ 0 ][ 3 ] );
+                $( '#EditWaliKelas' ).val( response.data[ 0 ][ 4 ] );
+                $( "#EditJurusan" ).selectpicker( "refresh" );
+                $( "#EditWaliKelas" ).selectpicker( "refresh" );
+            }
+        } );
+    };
+
+    function DeleteData( event ) {
+        swal( {
+            title: "Hapus Kelas",
+            text: "Yakin ingin menghapus kelas ini?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        } )
+            .then( ( willDelete ) => {
+                if ( willDelete ) {
+                    var idKelas = $( event ).data( "id" );
+                    let _url = '/admin/delete/kelasx';
+                    $.ajax( {
+                        url: _url,
+                        type: "POST",
+                        contentType: 'application/json;charset=UTF-8',
+                        data: JSON.stringify( { 'id': idKelas } ),
+                        dataType: "json",
+                        success: function ( response ) {
+                            if ( response.respon[ 'status' ] == true ) {
+                                swal( "Sukses", "Data Sudah Dihapus", "success" ).then( ( value ) => {
+                                    location.reload();
+                                } );
+                            } else {
+                                swal( "Gagal", "Data gagal Dihapus", "error" );
+                            }
+                        },
+                        error: function ( err ) {
+                            swal( "Gagal", "Data gagal Dihapus", "error" );
+                        }
+                    } );
+
+                } else {
+
+                }
+            } );
+    };
+    $( document ).ready( function () {
+        $( function () {
+            $( '.selectpicker' ).selectpicker();
+        } );
+
+        $.ajaxSetup( {
+            headers: {
+                'X-CSRF-TOKEN': jQuery( 'meta[name="csrf-token"]' ).attr( 'content' )
+            }
+        } );
+        let _url = '/admin/data/select/jurusan';
+        $.ajax( {
+            url: _url,
+            type: "POST",
+            success: function ( response ) {
+                $.each( response.data, function ( i, value ) {
+                    $( "#Jurusan" ).append( '<option value=' + value[ 0 ] + '>' + value[ 1 ] + '</option>' );
+                    $( "#EditJurusan" ).append( '<option value=' + value[ 0 ] + '>' + value[ 1 ] + '</option>' );
+                    $( "#Jurusan" ).selectpicker( "refresh" );
+                    $( "#EditJurusan" ).selectpicker( "refresh" );
+                } );
+
+            }
+        } );
+
+        let _url2 = '/admin/data/select/guru';
+        $.ajax( {
+            url: _url2,
+            type: "POST",
+            success: function ( response ) {
+                $.each( response.data, function ( i, value ) {
+                    $( "#WaliKelas" ).append( '<option value=' + value[ 0 ] + '>' + value[ 1 ] + '</option>' );
+                    $( "#EditWaliKelas" ).append( '<option value=' + value[ 0 ] + '>' + value[ 1 ] + '</option>' );
+                    $( "#WaliKelas" ).selectpicker( "refresh" );
+                    $( "#EditWaliKelas" ).selectpicker( "refresh" );
+                } );
+            }
+        } );
+
+
+        $( '#tambahDataKelas' ).on( 'click', function ( e ) {
+            e.preventDefault();
+            let namaKelas = $( '#namaKelas' ).val();
+            let jurusan = $( '#Jurusan' ).val();
+            let walikelas = $( '#WaliKelas' ).val();
+            let kelas = $( '#Kelas' ).val();
+
+
+            if ( namaKelas != "" && jurusan != "" && walikelas != "" && kelas != "" ) {
+                $.ajax( {
+                    method: "POST",
+                    url: '/admin/input/kelasx',
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify( { 'namaKelas': namaKelas, 'jurusan': jurusan, 'walikelas': walikelas, 'kelas': kelas } ),
+                    dataType: "json",
+                    success: function ( data ) {
+                        console.log( data );
+                        if ( data.data[ 'status' ] == true ) {
+                            swal( "Sukses", "Data Sudah Diinput", "success" ).then( ( value ) => {
+                                location.reload();
+                            } );
+                        } else {
+                            swal( "Gagal", "Data gagal diinput", "error" );
+                        }
+                    },
+                    error: function ( err ) {
+                        swal( "Gagal", "Data gagal diinput", "error" );
+                    }
+                } );
+            }
+        } );
+
+        $( '#editDataKelas' ).on( 'click', function ( e ) {
+            e.preventDefault();
+            let EditID = $( '#EditID' ).val();
+            let namaKelas = $( '#EditnamaKelas' ).val();
+            let jurusan = $( '#EditJurusan' ).val();
+            let walikelas = $( '#EditWaliKelas' ).val();
+
+            if ( namaKelas != "" && jurusan != "" && walikelas != "" ) {
+                $.ajax( {
+                    method: "POST",
+                    url: '/admin/update/kelasx',
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify( { 'EditID': EditID, 'namaKelas': namaKelas, 'jurusan': jurusan, 'walikelas': walikelas } ),
+                    dataType: "json",
+                    success: function ( data ) {
+                        console.log( data );
+                        if ( data.respon[ 'status' ] == true ) {
+                            swal( "Sukses", "Data Sudah Di Update", "success" ).then( ( value ) => {
+                                location.reload();
+                            } );
+                        } else {
+                            swal( "Gagal", "Data gagal Di Update", "error" );
+                        }
+
+                    },
+                    error: function ( err ) {
+                        swal( "Gagal", "Data gagal diinput", "error" );
+                    }
+                } );
+            } else {
+                swal( "Gagal", "Data gagal Di Update 2", "error" );
+            }
+        } );
+    } );
+
+</Script>
+{% endblock %}

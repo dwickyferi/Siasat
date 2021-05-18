@@ -1,0 +1,319 @@
+{% extends "template.html" %}
+{% block content %}
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Tabel Guru </h1>
+    <div class="align-items-center justify-content-between mb-4">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+            <i class="fas fa-plus fa-sm text-white-50"></i>
+            Tambah Data
+        </button>
+    </div>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Data Guru</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>NIP</th>
+                            <th>Nama</th>
+                            <th>Bidang Keahlian</th>
+                            <th>Program Keahlian</th>
+                            <th>Kompetensi Keahlian</th>
+                            <th>Fungsi</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>NIP</th>
+                            <th>Nama</th>
+                            <th>Bidang Keahlian</th>
+                            <th>Program Keahlian</th>
+                            <th>Kompetensi Keahlian</th>
+                            <th>Fungsi</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for dt in dataGuru %}
+                        <tr>
+                            <td>
+                                {{ dt[0] }}
+                            </td>
+                            <td>
+                                {{ dt[1] }}
+                            </td>
+                            <td>
+                                {{ dt[3] }}
+                            </td>
+                            <td>
+                                {{ dt[4] }}
+                            </td>
+                            <td>
+                                {{ dt[5] }}
+                            </td>
+                            <td>
+                                <button class="btn btn-success editdata" data-id="{{dt[0]}}" href="javascript:void(0)"
+                                    onclick="editPost(event.target)"><i class="fas fa-edit"></i> Edit Data</button>
+                                <button class="btn btn-danger DeleteData" data-id="{{dt[0]}}" href="javascript:void(0)"
+                                    onclick="DeleteData(event.target)"><i class="fas fa-trash"></i></button>
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Tambah Data Guru</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">NIP:</label>
+                            <input type="text" class="form-control" id="NIP" name="NIP" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Nama:</label>
+                            <input type="text" class="form-control" id="nama" name="nama" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Password:</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Bidang Keahlian:</label>
+                            <input type="text" class="form-control" id="bidangKeahlian" name="bidangKeahlian" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Program Keahlian:</label>
+                            <input type="text" class="form-control" id="programKeahlian" name="programKeahlian"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Kompetensi Keahlian:</label>
+                            <input type="text" class="form-control" id="kompetensiKeahlian" name="kompetensiKeahlian"
+                                required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="tambahDataGuru">Tambah Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Tambah Data Guru</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">NIP:</label>
+                            <input type="text" class="form-control" id="EditNIP" name="EditNIP" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Nama:</label>
+                            <input type="text" class="form-control" id="Editnama" name="Editnama" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Password:</label>
+                            <input type="password" class="form-control" id="Editpassword" name="Editpassword">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Bidang Keahlian:</label>
+                            <input type="text" class="form-control" id="EditbidangKeahlian" name="EditbidangKeahlian"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Program Keahlian:</label>
+                            <input type="text" class="form-control" id="EditprogramKeahlian" name="EditprogramKeahlian"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Kompetensi Keahlian:</label>
+                            <input type="text" class="form-control" id="EditkompetensiKeahlian"
+                                name="EditkompetensiKeahlian" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="editDataGuru">Edit Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+    $.ajaxSetup( {
+        headers: {
+            'X-CSRF-TOKEN': $( 'meta[name="csrf-token"]' ).attr( 'content' )
+        }
+    } );
+
+    function editPost( event ) {
+        $.ajaxSetup( {
+            headers: {
+                'X-CSRF-TOKEN': jQuery( 'meta[name="csrf-token"]' ).attr( 'content' )
+            }
+        } );
+        var idKelas = $( event ).data( "id" );
+        let _url = '/admin/edit/guru/' + idKelas;
+        $.ajax( {
+            url: _url,
+            type: "POST",
+            success: function ( response ) {
+                $( '#EditModal' ).modal( 'show' );
+                $( '#EditNIP' ).val( response.data[ 0 ][ 0 ] );
+                $( '#Editnama' ).val( response.data[ 0 ][ 1 ] );
+                $( '#EditbidangKeahlian' ).val( response.data[ 0 ][ 3 ] );
+                $( '#EditprogramKeahlian' ).val( response.data[ 0 ][ 4 ] );
+                $( '#EditkompetensiKeahlian' ).val( response.data[ 0 ][ 5 ] );
+
+            }
+        } );
+    };
+
+    function DeleteData( event ) {
+        swal( {
+            title: "Hapus Kelas",
+            text: "Yakin ingin menghapus kelas ini?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        } )
+            .then( ( willDelete ) => {
+                if ( willDelete ) {
+                    var nip = $( event ).data( "id" );
+                    console.log( nip );
+                    let _url = '/admin/delete/guru';
+                    $.ajax( {
+                        url: _url,
+                        type: "POST",
+                        contentType: 'application/json;charset=UTF-8',
+                        data: JSON.stringify( { 'id': nip } ),
+                        dataType: "json",
+                        success: function ( response ) {
+                            if ( response.data[ 'status' ] == true ) {
+                                swal( "Sukses", "Data Sudah Dihapus", "success" ).then( ( value ) => {
+                                    location.reload();
+                                } );
+                            } else {
+                                swal( "Gagal", "Data gagal Dihapus", "error" );
+                            }
+                        },
+                        error: function ( err ) {
+                            swal( "Gagal", "Data gagal Dihapus", "error" );
+                        }
+                    } );
+
+                } else {
+
+                }
+            } );
+    };
+    $( document ).ready( function () {
+        $( '#tambahDataGuru' ).on( 'click', function ( e ) {
+            e.preventDefault();
+
+            let nip = $( '#NIP' ).val();
+            let nama = $( '#nama' ).val();
+            let password = $( '#password' ).val();
+            let bidangKeahlian = $( '#bidangKeahlian' ).val();
+            let programKeahlian = $( '#programKeahlian' ).val();
+            let kompetensiKeahlian = $( '#kompetensiKeahlian' ).val();
+
+            if ( nip != "" && nama != "" && password != "" && bidangKeahlian != "" && programKeahlian != "" && kompetensiKeahlian != "" ) {
+                console.log( nip );
+                $.ajax( {
+                    method: "POST",
+                    url: '/admin/input/guru',
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify( { 'nip': nip, 'nama': nama, 'password': password, 'bidangKeahlian': bidangKeahlian, 'programKeahlian': programKeahlian, 'kompetensiKeahlian': kompetensiKeahlian } ),
+                    dataType: "json",
+                    success: function ( data ) {
+                        if ( data.respon[ 'status' ] == true ) {
+                            swal( "Sukses", "Data Berhasuk Diinput", "success" ).then( ( value ) => {
+                                location.reload();
+                            } );
+                        } else {
+                            swal( "Gagal", "Data gagal Diinput", "error" );
+                        }
+                    },
+                    error: function ( err ) {
+                        swal( "Gagal", "Data gagal diinput", "error" );
+                    }
+                } );
+            }
+        } );
+
+        $( '#editDataGuru' ).on( 'click', function ( e ) {
+            e.preventDefault();
+            let nip = $( '#EditNIP' ).val();
+            let nama = $( '#Editnama' ).val();
+            let password = $( '#Editpassword' ).val();
+            let bidangKeahlian = $( '#EditbidangKeahlian' ).val();
+            let programKeahlian = $( '#EditprogramKeahlian' ).val();
+            let kompetensiKeahlian = $( '#EditkompetensiKeahlian' ).val();
+
+
+            if ( nip != "" && nama != "" && bidangKeahlian != "" && programKeahlian != "" && kompetensiKeahlian != "" ) {
+                $.ajax( {
+                    method: "POST",
+                    url: '/admin/update/guru',
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify( { 'nip': nip, 'nama': nama, 'password': password, 'bidangKeahlian': bidangKeahlian, 'programKeahlian': programKeahlian, 'kompetensiKeahlian': kompetensiKeahlian } ),
+                    dataType: "json",
+                    success: function ( data ) {
+                        console.log( data );
+                        if ( data.data[ 'status' ] == true ) {
+                            swal( "Sukses", "Data Sudah Diupdate", "success" ).then( ( value ) => {
+                                location.reload();
+                            } );
+                        } else {
+                            swal( "Gagal", "Data gagal Diupdate", "error" );
+                        }
+
+                    },
+                    error: function ( err ) {
+                        swal( "Gagal", "Data gagal Diupdate", "error" );
+                    }
+                } );
+            }
+        } );
+
+
+
+
+    } );
+
+
+</Script>
+{% endblock %}

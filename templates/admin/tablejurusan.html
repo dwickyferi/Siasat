@@ -1,0 +1,290 @@
+{% extends "template.html" %}
+{% block content %}
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Tabel Jurusan</h1>
+    <div class="align-items-center justify-content-between mb-4">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+            <i class="fas fa-plus fa-sm text-white-50"></i>
+            Tambah Data
+        </button>
+    </div>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Data Jurusan</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Nama Jurusan</th>
+                            <th>Program Keahlian</th>
+                            <th>Bidang Keahlian</th>
+                            <th>Logo</th>
+                            <th>Fungsi</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Nama Jurusan</th>
+                            <th>Program Keahlian</th>
+                            <th>Bidang Keahlian</th>
+                            <th>Logo</th>
+                            <th>Fungsi</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for dt in dataJurusan %}
+                        <tr>
+                            <td>
+                                {{ dt[1] }}
+                            </td>
+                            <td>
+                                {{ dt[2] }}
+                            </td>
+                            <td>
+                                {{ dt[3] }}
+                            </td>
+                            <td>
+                                {% if dt[4] != 'default.png' %}
+                                <img src="/static/logo/{{dt[4]}}" style="height:70px; width:70px">
+                                {% endif %}
+                                {% if dt[4] == 'default.png' %}
+                                <img src="/static/login/iamges/logo/logo.jpeg" style="height:70px; width:70px">
+                                {% endif %}
+                            </td>
+                            <td>
+                                <button class="btn btn-success editdata" data-id="{{dt[0]}}" href="javascript:void(0)"
+                                    onclick="editPost(event.target)"><i class="fas fa-edit"></i> Edit Data</button>
+                                <button class="btn btn-danger DeleteData" data-id="{{dt[0]}}" href="javascript:void(0)"
+                                    onclick="DeleteData(event.target)"><i class="fas fa-trash"></i></button>
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Tambah Jurusan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Nama Jurusan:</label>
+                            <input type="text" class="form-control" id="namaKelas" name="namaKelas">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Program Keahlian:</label>
+                            <input type="text" class="form-control" id="programKeahlian" name="programKeahlian">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Bidang Keahlian Keahlian:</label>
+                            <input type="text" class="form-control" id="bidangKeahlian" name="bidangKeahlian">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Logo Jurusan:</label>
+                            <input type="file" class="form-control-file" id="logo" name="logo">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="tambahDataJurusan">Tambah Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editData" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Edit Kelas</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" class="form-control" id="IDKelas" name="IDKelas">
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Nama Kelas:</label>
+                            <input type="text" class="form-control" id="EditnamaKelas" name="EditnamaKelas">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Program Keahlian:</label>
+                            <input type="text" class="form-control" id="EditprogramKeahlian" name="EditprogramKeahlian">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Bidang Keahlian Keahlian:</label>
+                            <input type="text" class="form-control" id="EditbidangKeahlian" name="EditbidangKeahlian">
+                        </div>
+                    </form>
+                </div>
+                <div class=" modal-footer">
+                    <button type="button" class="btn btn-primary" id="editDataJurusan">Edit Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $.ajaxSetup( {
+        headers: {
+            'X-CSRF-TOKEN': $( 'meta[name="csrf-token"]' ).attr( 'content' )
+        }
+    } );
+
+    function editPost( event ) {
+        $.ajaxSetup( {
+            headers: {
+                'X-CSRF-TOKEN': jQuery( 'meta[name="csrf-token"]' ).attr( 'content' )
+            }
+        } );
+        var idKelas = $( event ).data( "id" );
+        let _url = '/admin/edit/jurusan/' + idKelas;
+        $.ajax( {
+            url: _url,
+            type: "POST",
+            success: function ( response ) {
+                $( '#editData' ).modal( 'show' );
+                $( '#IDKelas' ).val( response.data[ 0 ][ 0 ] );
+                $( '#EditnamaKelas' ).val( response.data[ 0 ][ 1 ] );
+                $( '#EditprogramKeahlian' ).val( response.data[ 0 ][ 2 ] );
+                $( '#EditbidangKeahlian' ).val( response.data[ 0 ][ 3 ] );
+            }
+        } );
+    };
+
+    function DeleteData( event ) {
+        swal( {
+            title: "Hapus Kelas",
+            text: "Yakin ingin menghapus kelas ini?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        } )
+            .then( ( willDelete ) => {
+                if ( willDelete ) {
+                    var idJurusan = $( event ).data( "id" );
+                    let _url = '/admin/delete/jurusan';
+                    $.ajax( {
+                        url: _url,
+                        type: "POST",
+                        contentType: 'application/json;charset=UTF-8',
+                        data: JSON.stringify( { 'id': idJurusan } ),
+                        dataType: "json",
+                        success: function ( response ) {
+                            if ( response.data[ 'status' ] == true ) {
+                                swal( "Sukses", "Data Sudah Dihapus", "success" ).then( ( value ) => {
+                                    location.reload();
+                                } );
+                            } else {
+                                swal( "Gagal", "Data gagal Dihapus", "error" );
+                            }
+                        },
+                        error: function ( err ) {
+                            swal( "Gagal", "Data gagal Dihapus", "error" );
+                        }
+                    } );
+
+                } else {
+
+                }
+            } );
+    };
+    $( document ).ready( function () {
+        $( '#tambahDataJurusan' ).on( 'click', function ( e ) {
+            e.preventDefault();
+
+            let namaKelas = $( '#namaKelas' ).val();
+            let program = $( '#programKeahlian' ).val();
+            let bidang = $( '#bidangKeahlian' ).val();
+            let cekLogo = $( '#logo' ).val();
+            let logo = $( 'input[name="logo"]' ).get( 0 ).files[ 0 ];
+            var formData = new FormData();
+            formData.append( 'logo', logo );
+            var objArr = [];
+            objArr.push( { 'namaKelas': namaKelas, 'program': program, 'bidang': bidang } );
+            formData.append( 'objArr', JSON.stringify( objArr ) );
+            if ( namaKelas != "" && program != "" && bidang != "" && cekLogo != "" ) {
+                $.ajax( {
+                    method: "POST",
+                    url: '/admin/input/jurusan',
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    success: function ( data ) {
+                        if ( data.respon[ 'status' ] == true ) {
+                            swal( "Sukses", "Data Sudah Diinput", "success" ).then( ( value ) => {
+                                location.reload();
+                            } );
+                        }
+                    },
+                    error: function ( err ) {
+                        swal( "Gagal", "Data gagal diinput", "error" );
+                    }
+                } );
+            } else {
+                swal( "Data Kosong", "Data tidak boleh kosong", "warning" );
+            }
+        } );
+
+        $( '#editDataJurusan' ).on( 'click', function ( e ) {
+            e.preventDefault();
+            let IDKelas = $( '#IDKelas' ).val();
+            let namaKelas = $( '#EditnamaKelas' ).val();
+            let program = $( '#EditprogramKeahlian' ).val();
+            let bidang = $( '#EditbidangKeahlian' ).val();
+
+
+            if ( IDKelas != "" && namaKelas != "" && program != "" && bidang != "" ) {
+                $.ajax( {
+                    method: "POST",
+                    url: '/admin/update/jurusan',
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify( { 'idkelas': IDKelas, 'namaKelas': namaKelas, 'program': program, 'bidang': bidang } ),
+                    dataType: "json",
+                    success: function ( data ) {
+                        console.log( data );
+                        if ( data.data[ 'status' ] == true ) {
+                            swal( "Sukses", "Data Sudah Di Update", "success" ).then( ( value ) => {
+                                location.reload();
+                            } );
+                        } else {
+                            swal( "Gagal", "Data gagal Di Update", "error" );
+                        }
+
+                    },
+                    error: function ( err ) {
+                        swal( "Gagal", "Data gagal Di Update", "error" );
+                    }
+                } );
+            }
+        } );
+
+
+
+
+    } );
+
+
+</Script>
+{% endblock %}

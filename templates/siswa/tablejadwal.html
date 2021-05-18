@@ -1,0 +1,139 @@
+{% extends "template.html" %}
+{% block content %}
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Data Mata Pelajaran</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>HARI</th>
+                            <th>NAMA PELAJARAN</th>
+                            <th>NAMA GURU</th>
+                            <th>JAM AWAL</th>
+                            <th>JAM AKHIR</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>HARI</th>
+                            <th>NAMA PELAJARAN</th>
+                            <th>NAMA GURU</th>
+                            <th>JAM AWAL</th>
+                            <th>JAM AKHIR</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for dt in Senin %}
+                        <tr>
+                            <td>
+                                {{ dt[2] }}
+                            </td>
+                            <td>
+                                {{ dt[1] }}
+                            </td>
+                            <td>
+                                {{ dt[3] }}
+                            </td>
+                            <td>
+                                {{ dt[4] }}
+                            </td>
+                            <td>
+                                {{ dt[5] }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% for dt2 in Selasa %}
+                        <tr>
+                            <td>
+                                {{ dt2[2] }}
+                            </td>
+                            <td>
+                                {{ dt2[1] }}
+                            </td>
+                            <td>
+                                {{ dt2[3] }}
+                            </td>
+                            <td>
+                                {{ dt2[4] }}
+                            </td>
+                            <td>
+                                {{ dt2[5] }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% for dt3 in Rabu %}
+                        <tr>
+                            <td>
+                                {{ dt3[2] }}
+                            </td>
+                            <td>
+                                {{ dt3[1] }}
+                            </td>
+                            <td>
+                                {{ dt3[3] }}
+                            </td>
+                            <td>
+                                {{ dt3[4] }}
+                            </td>
+                            <td>
+                                {{ dt3[5] }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% for dt4 in Kamis %}
+                        <tr>
+                            <td>
+                                {{ dt4[2] }}
+                            </td>
+                            <td>
+                                {{ dt4[1] }}
+                            </td>
+                            <td>
+                                {{ dt4[3] }}
+                            </td>
+                            <td>
+                                {{ dt4[4] }}
+                            </td>
+                            <td>
+                                {{ dt4[5] }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% for dt in Jumat %}
+                        <tr>
+                            <td>
+                                {{ dt[2] }}
+                            </td>
+                            <td>
+                                {{ dt[1] }}
+                            </td>
+                            <td>
+                                {{ dt[3] }}
+                            </td>
+                            <td>
+                                {{ dt[4] }}
+                            </td>
+                            <td>
+                                {{ dt[5] }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+
+</Script>
+{% endblock %}

@@ -1,0 +1,240 @@
+{% extends "template.html" %}
+{% block content %}
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Tabel Mata Pelajaran </h1>
+    <div class="align-items-center justify-content-between mb-4">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+            <i class="fas fa-plus fa-sm text-white-50"></i>
+            Tambah Data
+        </button>
+    </div>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Data Mata Pelajaran</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Nama Pelajaran</th>
+                            <th>Fungsi</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Nama Pelajaran</th>
+                            <th>Fungsi</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for dt in dataPelajaran %}
+                        <tr>
+                            <td>
+                                {{ dt[1] }}
+                            </td>
+                            <td>
+                                <button class="btn btn-success editdata" data-id="{{dt[0]}}" href="javascript:void(0)"
+                                    onclick="editPost(event.target)"><i class="fas fa-edit"></i> Edit Data</button>
+                                <button class="btn btn-danger DeleteData" data-id="{{dt[0]}}" href="javascript:void(0)"
+                                    onclick="DeleteData(event.target)"><i class="fas fa-trash"></i></button>
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Tambah Data Mata Pelajaran</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Nama Mata Pelajaran:</label>
+                            <input type="text" class="form-control" id="nama" name="nama" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="tambahDataPelajaran">Tambah Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Edit Data Pelajaran</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" class="form-control" id="EditID" name="EditID" readonly>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Nama:</label>
+                            <input type="text" class="form-control" id="Editnama" name="Editnama" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="editDataPelajaran">Edit Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+    $.ajaxSetup( {
+        headers: {
+            'X-CSRF-TOKEN': $( 'meta[name="csrf-token"]' ).attr( 'content' )
+        }
+    } );
+
+    function editPost( event ) {
+        $.ajaxSetup( {
+            headers: {
+                'X-CSRF-TOKEN': jQuery( 'meta[name="csrf-token"]' ).attr( 'content' )
+            }
+        } );
+        var idPelajaran = $( event ).data( "id" );
+        let _url = '/admin/edit/pelajaran/' + idPelajaran;
+        $.ajax( {
+            url: _url,
+            type: "POST",
+            success: function ( response ) {
+                $( '#EditModal' ).modal( 'show' );
+                $( '#EditID' ).val( response.data[ 0 ][ 0 ] );
+                $( '#Editnama' ).val( response.data[ 0 ][ 1 ] );
+
+            }
+        } );
+    };
+
+    function DeleteData( event ) {
+        swal( {
+            title: "Hapus Kelas",
+            text: "Yakin ingin menghapus kelas ini?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        } )
+            .then( ( willDelete ) => {
+                if ( willDelete ) {
+                    var id = $( event ).data( "id" );
+                    let _url = '/admin/delete/pelajaran';
+                    $.ajax( {
+                        url: _url,
+                        type: "POST",
+                        contentType: 'application/json;charset=UTF-8',
+                        data: JSON.stringify( { 'id': id } ),
+                        dataType: "json",
+                        success: function ( response ) {
+                            if ( response.data[ 'status' ] == true ) {
+                                swal( "Sukses", "Data Sudah Dihapus", "success" ).then( ( value ) => {
+                                    location.reload();
+                                } );
+                            } else {
+                                swal( "Gagal", "Data gagal Dihapus", "error" );
+                            }
+                        },
+                        error: function ( err ) {
+                            swal( "Gagal", "Data gagal Dihapus", "error" );
+                        }
+                    } );
+
+                } else {
+
+                }
+            } );
+    };
+    $( document ).ready( function () {
+        $( '#tambahDataPelajaran' ).on( 'click', function ( e ) {
+            e.preventDefault();
+            let nama = $( '#nama' ).val();
+
+            if ( nama != "" ) {
+                $.ajax( {
+                    method: "POST",
+                    url: '/admin/input/pelajaran',
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify( { 'nama': nama } ),
+                    dataType: "json",
+                    success: function ( data ) {
+                        if ( data.respon[ 'status' ] == true ) {
+                            swal( "Sukses", "Data Berhasil Diinput", "success" ).then( ( value ) => {
+                                location.reload();
+                            } );
+                        } else {
+                            swal( "Gagal", "Data gagal Diinput", "error" );
+                        }
+                    },
+                    error: function ( err ) {
+                        swal( "Gagal", "Data gagal diinput", "error" );
+                    }
+                } );
+            }
+        } );
+
+        $( '#editDataPelajaran' ).on( 'click', function ( e ) {
+            e.preventDefault();
+            let id = $( '#EditID' ).val();
+            let nama = $( '#Editnama' ).val();
+
+
+            if ( id != "" && nama != "" ) {
+                $.ajax( {
+                    method: "POST",
+                    url: '/admin/update/pelajaran',
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify( { 'id': id, 'nama': nama } ),
+                    dataType: "json",
+                    success: function ( data ) {
+                        console.log( data );
+                        if ( data.data[ 'status' ] == true ) {
+                            swal( "Sukses", "Data Sudah Diupdate", "success" ).then( ( value ) => {
+                                location.reload();
+                            } );
+                        } else {
+                            swal( "Gagal", "Data gagal Diupdate", "error" );
+                        }
+
+                    },
+                    error: function ( err ) {
+                        swal( "Gagal", "Data gagal Diupdate", "error" );
+                    }
+                } );
+            }
+        } );
+
+
+
+
+    } );
+
+
+</Script>
+{% endblock %}

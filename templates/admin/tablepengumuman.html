@@ -1,0 +1,78 @@
+{% extends "template.html" %}
+{% block content %}
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Tabel Pengumuman </h1>
+    <div class="align-items-center justify-content-between mb-4">
+    </div>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Pengumuman</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <form>
+                    <div class="form-group">
+                        <textarea class="form-control ckeditor" style="height:350px!important;" id="PengumumanEditor"
+                            name="PengumumanEditor">{{data}}</textarea>
+                    </div>
+                </form>
+            </div>
+            <button type="button" class="btn btn-primary" id="SimpanPengumuman">Simpan Pengumuman</button>
+        </div>
+
+    </div>
+
+
+</div>
+
+<script>
+    $( document ).ready( function () {
+        $( '#SimpanPengumuman' ).on( 'click', function ( e ) {
+            e.preventDefault();
+            dataPengumuman = CKEDITOR.instances.PengumumanEditor.getData();
+            console.log( dataPengumuman );
+            swal( {
+                title: "Perbarui Pengumuman",
+                text: "Yakin ingin memperbarui pengumuman ini?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            } )
+                .then( ( willDelete ) => {
+                    if ( willDelete ) {
+                        var id = $( event ).data( "id" );
+                        let _url = '/admin/update/pengumuman';
+                        $.ajax( {
+                            url: _url,
+                            type: "POST",
+                            contentType: 'application/json;charset=UTF-8',
+                            data: JSON.stringify( { 'data': dataPengumuman } ),
+                            dataType: "json",
+                            success: function ( response ) {
+                                if ( response.data[ 'status' ] == true ) {
+                                    swal( "Sukses", "Data Sudah Dihapus", "success" ).then( ( value ) => {
+                                        location.reload();
+                                    } );
+                                } else {
+                                    swal( "Gagal", "Data gagal Dihapus", "error" );
+                                }
+                            },
+                            error: function ( err ) {
+                                swal( "Gagal", "Data gagal Dihapus", "error" );
+                            }
+                        } );
+
+                    } else {
+
+                    }
+                } );
+        } );
+
+    } );
+
+
+</Script>
+{% endblock %}

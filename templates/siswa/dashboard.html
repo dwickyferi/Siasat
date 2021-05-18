@@ -1,0 +1,60 @@
+{% extends "template.html" %}
+{% block content %}
+<script>
+
+</script>
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Data Diri
+                </div>
+                <div class="card-body">
+                    {% for dt in detail %}
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">NIS</label>
+                        <input class="form-control form-control-sm" type="text" placeholder="{{dt[0]}}" readonly="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">Nama Lengkap</label>
+                        <input class="form-control form-control-sm" type="text" placeholder="{{dt[1]}}" readonly="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">Kelas</label>
+                        <input class="form-control form-control-sm" type="text" placeholder="{{dt[2]}}" readonly="true">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Pengumuman
+                </div>
+                <div class="card-body">
+
+                    <textarea class="form-control ckeditor" style="height:350px!important;" id="PengumumanEditor"
+                        name="PengumumanEditor" readonly="true">{{pengumuman }}</textarea>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Content Row -->
+
+
+{% endblock %}
